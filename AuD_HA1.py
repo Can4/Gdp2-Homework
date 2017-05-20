@@ -9,6 +9,23 @@ def printMatrix(m):
             print(value, end='')
             i = i + 1
         print("|")
+        
+def matMultDef(a,b):
+    temp = 0
+    height_c = len(a)
+    width_c = len(b[0])
+    c = [[0 for x in range(width_c)] for y in range(height_c)]
+    print(c)
+    for k in range(len(b[0])):
+        for i in range(len(a)):
+            temp = 0
+            for j in range(len(a[i])):
+                temp = temp + (a[i][j] * b[j][k])
+            c[i][k] = temp
+            print(c)
+            print()
+
+    return c
 
 def divide(A):
     i = len(A)
