@@ -9,33 +9,36 @@ def printMatrix(m):
             print(value, end='')
             i = i + 1
         print("|")
-        
+
 def matMultDef(a,b):
+    print("\nmatMultDef :")
     temp = 0
     height_c = len(a)
     width_c = len(b[0])
     c = [[0 for x in range(width_c)] for y in range(height_c)]
-    print(c)
-    for k in range(len(b[0])):
-        for i in range(len(a)):
+    for i in range(len(a)):
+        for j in range(len(b[0])):
             temp = 0
-            for j in range(len(a[i])):
-                temp = temp + (a[i][j] * b[j][k])
-            c[i][k] = temp
-            print(c)
-            print()
-
+            for k in range(len(b)):
+                temp = temp + (a[i][k] * b[k][j])
+            c[i][j] = temp
+        printMatrix(c)
+        print()
+    print("Berechnet matMultDef :")
+    printMatrix(c)
     return c
-
+#
+# Dividing a given matrix into 4 sub-matrices
+#
 def divide(A):
     i = len(A)
     j = len(A[0])
-
+# Berechnung Zeilenmitte von A  -- zm_A
+# Berechnung Spaltenmitte von A -- sm_A
     zm_A = (i-1) // 2
     sm_A = (j-1) // 2
-#
-# für i gerade - j gerade
-#
+
+#  für i gerade - j gerade
     if (i%2)==0 and (j%2)==0 :
         height_A = i // 2
         width_A = j // 2
@@ -43,9 +46,8 @@ def divide(A):
         A12 = [[0 for x in range(width_A)] for y in range(height_A)]
         A21 = [[0 for x in range(width_A)] for y in range(height_A)]
         A22 = [[0 for x in range(width_A)] for y in range(height_A)]
-#
-# für i ungerade - j gerade
-#
+
+#  für i ungerade - j gerade
     if (i%2)==1 and (j%2)==0 :
         height_A = i // 2
         width_A = j // 2
@@ -53,9 +55,8 @@ def divide(A):
         A12 = [[0 for x in range(width_A)] for y in range(height_A+1)]
         A21 = [[0 for x in range(width_A)] for y in range(height_A)]
         A22 = [[0 for x in range(width_A)] for y in range(height_A)]
-#
-# für i gerade - j ungerade
-#
+
+#  für i gerade - j ungerade
     if (i%2)==0 and (j%2)==1 :
         height_A = i // 2
         width_A = j // 2
@@ -63,10 +64,9 @@ def divide(A):
         A12 = [[0 for x in range(width_A)] for y in range(height_A)]
         A21 = [[0 for x in range(width_A+1)] for y in range(height_A)]
         A22 = [[0 for x in range(width_A)] for y in range(height_A)]
-#
-# für i ungerade - j ungerade
+
+#  für i ungerade - j ungerade
 #  i == j
-#
     if i==j and (i%2)==1 and (j%2)==1 :
         height_A = i // 2
         width_A = j // 2
@@ -74,10 +74,9 @@ def divide(A):
         A12 = [[0 for x in range(width_A)] for y in range(height_A+1)]
         A21 = [[0 for x in range(width_A+1)] for y in range(height_A)]
         A22 = [[0 for x in range(width_A)] for y in range(height_A)]
-#
-# für i ungerade - j ungerade
+
+#  für i ungerade - j ungerade
 #  i<j OR i>j
-#
     if (i>j or i<j) and (i%2)==1 and (j%2)==1 :
         height_A = i // 2
         width_A = j // 2
@@ -120,8 +119,7 @@ def divide(A):
     return A11,A12,A21,A22
 
 
-def Add_Matrix(A,B) :
-
+def Add_Matrices(A,B) :
     result = [[0 for x in range(len(B[0]))] for y in range(len(A))]
     for i in range(len(A)):
        for j in range(len(A[0])):
@@ -136,52 +134,41 @@ def matMultDC(A,B):
     Bi = len(B)
     Bj = len(B[0])
 
-#   Exit Conditions
+#   Exit conditions
 #
-# --> (1x1) x (1x1)
+# --> (1x1) * (1x1)
     if (Ai ==1 and Aj ==1) and (Bi == 1 and Bj==1):
-        temp = [[ A[0][0]*B[0][0] ]]
-        print(" *1* ")
-        return temp
-# --> (1xn) x (nx1)
+        return [[ A[0][0]*B[0][0] ]]
+# --> (1xn) * (nx1)
     elif (Ai==Bj==1):
         temp = 0
         for k in range(0,Aj):
             temp = temp + A[0][k] * B[k][0]
         C = [[temp]]
-        print(C)
-        print(" *2* ")
         return C
-# --> (nx1) x (1xn)
+# --> (nx1) * (1xn)
     elif (Aj==Bi==1) and (Ai==Bj):
         C = [[0 for x in range(Ai)] for y in range(Ai)]
         for k in range(0,Ai):
             for t in range(0,Ai):
                 C[k][t] = A[k][0] * B[0][t]
-        print(" *3* ")
         return C
-# --> (nx1) x (1xm)
+# --> (nx1) * (1xm)
     elif (Aj==Bi==1):
         C = [[0 for x in range(Bj)] for y in range(Ai)]
-        print(C)
         for k in range(0,Ai):
             for t in range(0,Bj):
                 C[k][t] = A[k][0] * B[0][t]
-        print(" *4* ")
         return C
-# --> (2x2) x (2x1)
+# --> (2x2) * (2x1)
     elif (Aj==Bi==2) and (Ai == 2 and Bj ==1):
         C = [[0 for x in range(Bj)] for y in range(Ai)]
-        print(" *5* ")
-        print(C)
         C[0][0] = A[0][0]*B[0][0] + A[0][1]*B[1][0]
         C[1][0] = A[1][0]*B[0][0] + A[1][1]*B[1][0]
         return C
-# --> (1x2) x (2x2)
+# --> (1x2) * (2x2)
     elif (Aj==Bi==2) and (Ai == 1 and Bj == 2):
         C = [[0 for x in range(Bj)] for y in range(Ai)]
-        print(" *6* ")
-        print(C)
         C[0][0] = A[0][0]*B[0][0] + A[0][1]*B[1][0]
         C[0][1] = A[0][0]*B[0][1] + A[0][1]*B[1][1]
         return C
@@ -191,21 +178,21 @@ def matMultDC(A,B):
     A1,A2,A3,A4 = divide(A)
     B1,B2,B3,B4 = divide(B)
 
-    print("A1: ",A1);print("A2: ",A2);print("A3: ",A3);print("A4: ",A4,"\n")
-    print("B1: ",B1);print("B2: ",B2);print("B3: ",B3);print("B4: ",B4,"\n")
+    print("Teilmatrizen von A:\nA1: ",A1); print("A2: ",A2); print("A3: ",A3); print("A4: ",A4,"\n")
+    print("Teilmatrizen von B:\nB1: ",B1); print("B2: ",B2); print("B3: ",B3); print("B4: ",B4,"\n")
 
-    C1 = Add_Matrix(matMultDC(A1,B1), matMultDC(A2,B3))
-    C2 = Add_Matrix(matMultDC(A1,B2), matMultDC(A2,B4))
-    C3 = Add_Matrix(matMultDC(A3,B1), matMultDC(A4,B3))
-    C4 = Add_Matrix(matMultDC(A3,B2), matMultDC(A4,B4))
-#    printMatrix(A)
-    print("A1: ",A1);print("A2: ",A2);print("A3: ",A3);print("A4: ",A4,"\n")
-#    printMatrix(B)
-    print("B1: ",B1);print("B2: ",B2);print("B3: ",B3);print("B4: ",B4,"\n")
-    print("C1: ",C1);print("C2: ",C2);print("C3: ",C3);print("C4: ",C4)
+# Multiplication of the sub-matrices
+# C1: Top Left, C2: Top Right, C3: Bottom Left, C4: Bottom Right
+    C1 = Add_Matrices(matMultDC(A1,B1), matMultDC(A2,B3))
+    C2 = Add_Matrices(matMultDC(A1,B2), matMultDC(A2,B4))
+    C3 = Add_Matrices(matMultDC(A3,B1), matMultDC(A4,B3))
+    C4 = Add_Matrices(matMultDC(A3,B2), matMultDC(A4,B4))
+
+    print("Teilergebnisse :\nC1: ",C1); print("C2: ",C2); print("C3: ",C3); print("C4: ",C4,"\n")
 
 # Merging our results (C1,C2,C3,C4) into one Matrix C
 # and returning C
+    print("Merging results into one Matrix C...")
     C = []
     for k in range(0,len(C1)):
         C.append(C1[k]+C2[k])
@@ -213,7 +200,6 @@ def matMultDC(A,B):
         C.append(C3[k]+C4[k])
     printMatrix(C)
     return C
-
 
 
 #   TEST
@@ -231,7 +217,6 @@ def matMultDC(A,B):
 #A = [[1,2,3,5,9,1,2]]
 #B = [[2],[5],[1],[3],[1],[2],[7]]
 
-
 #   (2x1) * (1x2)
 #A = [[2],[1]]
 #B = [[1,3]]
@@ -245,10 +230,9 @@ def matMultDC(A,B):
 #A = [[2],[5],[1],[3],[1],[2],[7]]
 #B = [[1,2,3,5,9,1,2]]
 
-
 #   (2x3) * (3x2)
-#A = [[1,0,1],[4,2,1]]
-#B = [[2,3],[1,0],[4,1]]
+A = [[3,2,1],[1,0,2]]
+B = [[1,2],[0,1],[4,0]]
 
 #   (2x2) * (2x2)
 #A = [[1,5],[4,2]]
@@ -271,8 +255,8 @@ def matMultDC(A,B):
 #B = [[7,3,2,5,1],[4,2,5,1,5],[10,0,1,0,0],[1,0,2,1,2],[1,9,3,1,2]]
 
 #   (3x4) * (4x3)
-A = [[2,3,2,7],[4,5,6,2],[1,0,4,0]]
-B = [[5,8,2],[1,0,1],[9,7,5],[2,6,0]]
+#A = [[2,3,2,7],[4,5,6,2],[1,0,4,0]]
+#B = [[5,8,2],[1,0,1],[9,7,5],[2,6,0]]
 
 #   (4x3) * (3x4)
 #A = [[5,8,2],[1,0,1],[9,7,5],[2,6,0]]
@@ -282,7 +266,9 @@ B = [[5,8,2],[1,0,1],[9,7,5],[2,6,0]]
 #A = [[5,8],[1,0],[9,5],[2,0]]
 #B = [[2,3,2,7],[4,5,6,2]]
 
+matMultDef(A,B)
 
+print("\nmatMultDC :")
 a = matMultDC(A,B)
-print()
+print("\nBerechnet MatMultDC :")
 printMatrix(a)
